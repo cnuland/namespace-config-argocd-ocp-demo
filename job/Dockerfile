@@ -8,7 +8,7 @@ RUN rm /etc/rhsm-host && \
     chmod 775 /app && \
     yum repolist > /dev/null && \
     yum update -y && \
-    yum install -y python3 python-pip && \
+    yum install -y python3 && \
     curl -o jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && \
     chmod +x ./jq && \
     cp jq /usr/bin && \
