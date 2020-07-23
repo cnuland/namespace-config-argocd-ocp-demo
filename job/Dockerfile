@@ -1,10 +1,10 @@
 FROM ubi8:latest
 
 USER 0
-WORKDIR /script
-ADD group-label.py /script
+COPY group-label.py /app
+WORKDIR /app
 RUN rm /etc/rhsm-host && \
-    chmod 775 /script && \
+    chmod 775 /app && \
     yum repolist > /dev/null && \
     yum update -y && \
     yum install -y python3 python-pip && \
