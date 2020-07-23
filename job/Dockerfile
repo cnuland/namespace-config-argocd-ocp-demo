@@ -1,6 +1,7 @@
 FROM ubi8:latest
 
 USER 0
+RUN mkdir /app
 COPY group-label.py /app
 WORKDIR /app
 RUN rm /etc/rhsm-host && \
