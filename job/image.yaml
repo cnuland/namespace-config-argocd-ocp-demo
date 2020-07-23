@@ -7,7 +7,7 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
-      name: registry.access.redhat.com/ubi8/ubi-minimal:latest
+      name: registry.access.redhat.com/ubi8/ubi:latest
     importPolicy: {}
     name: latest
     referencePolicy:
