@@ -1,0 +1,11 @@
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: AI_Team
+  labels:
+    type: devproject
+    projectname: saleslearning
+    test1: devteam
+    test2: devteam
+    test3: devteam
+    test5: meow

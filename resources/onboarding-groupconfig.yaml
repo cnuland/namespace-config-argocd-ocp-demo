@@ -1,0 +1,37 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupConfig
+metadata:
+  name: team-onboarding
+spec:
+  labelSelector:
+    matchLabels:
+      type: devproject    
+  templates:
+  - objectTemplate: |
+      {{range $k, $v := $.Labels}}
+      {{if eq $v "devteam"}}
+      - apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: {{ $k }}-dev
+      {{end}}
+      {{end}}
+  - objectTemplate: |
+      {{$Name := .Name}}  
+      {{range $k, $v := $.Labels}}
+      {{if eq $v "devteam"}}
+      - apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: {{ $k }}-dev
+          namespace: {{ $k }}-dev
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: admin
+        subjects:
+        - kind: Group
+          apiGroup: rbac.authorization.k8s.io
+          name: {{ $Name }}
+      {{end}}
+      {{end}}
