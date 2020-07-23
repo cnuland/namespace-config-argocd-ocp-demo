@@ -4,7 +4,7 @@ USER 0
 WORKDIR /script
 ADD group-label.py /script
 RUN rm /etc/rhsm-host && \
-    chmod 775 /scripts && \
+    chmod 775 /script && \
     yum repolist > /dev/null && \
     yum update -y && \
     yum install -y python3 python-pip && \
