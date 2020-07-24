@@ -3,7 +3,7 @@ import os
 import json
 
 token = os.getenv('TOKEN')
-commands.getstatusoutput('oc login https://kubernetes.default.svc.cluster.local --token={token}'.format())
+commands.getstatusoutput('oc login https://kubernetes.default.svc.cluster.local --token={}'.format(token))
 data = commands.getstatusoutput('oc get cm -n namespace-configuration-operator group-labels -o json | jq -r ".data[]"')
 groups = json.loads(data[1])
 for group in groups:
