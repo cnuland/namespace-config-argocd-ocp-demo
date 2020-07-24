@@ -2,7 +2,7 @@ FROM ubi8:latest
 
 USER 0
 RUN mkdir /app
-RUN mkdir ~/.kube
+ENV HOME=/app
 WORKDIR /app
 ADD group-label.py ./
 RUN rm /etc/rhsm-host && \
@@ -16,6 +16,5 @@ RUN rm /etc/rhsm-host && \
     curl -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && \
     tar -xvf oc.tar.gz && \
     chmod +x ./oc && \
-    cp oc /usr/bin && \
-    chmod 775 ~/.kube
+    cp oc /usr/bin
 USER 1001
