@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: group-labels
+data:
+  group-labels.json: |
+    [{"name": "AI_Team", "labels": [{"key":"type","value":"devproject"}]}]
