@@ -10,7 +10,7 @@ def bash_command(cmd):
   return subprocess.check_output(cmd)
 
 token = os.getenv('TOKEN')
-bash_command_pipe('oc login https://kubernetes.default.svc.cluster.local --token={}'.format(token))
+bash_command_pipe('oc login https://kubernetes.default.svc.cluster.local --token={} > /dev/null 2>&1'.format(token))
 data = bash_command_pipe("oc get cm -n namespace-configuration-operator group-labels -o json | jq -r \".data[]\"")
 groups = json.loads(data)
 for group in groups:
