@@ -15,5 +15,6 @@ RUN rm /etc/rhsm-host && \
     curl -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && \
     tar -xvf oc.tar.gz && \
     chmod +x ./oc && \
-    cp oc /usr/bin
+    cp oc /usr/bin && \
+    pip3 install commands
 USER 1001

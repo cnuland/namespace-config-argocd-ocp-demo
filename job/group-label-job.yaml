@@ -17,5 +17,5 @@ spec:
             - name: TOKEN
               value: MLE98hnx7RwMMDgE_ak8wzT92OyLKrtZPMgpHgQGNlg 
             image: group-labeling-job:latest
-            command: ["python", "/app/group-label.py"]
+            command: ["python3", "group-label.py"]
           restartPolicy: OnFailure
