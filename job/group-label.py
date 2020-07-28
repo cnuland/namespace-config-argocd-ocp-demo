@@ -22,7 +22,7 @@ for group in groups:
   if oc:
     labels = group["labels"]
     for label in labels:
-      print(label)
+      print("Checking for label:{}".format(label))
       key = label["key"]
       value = label["value"]
       oc = bash_command_pipe('oc get group {} --template "{{{{ .metadata.labels.{} }}}}"'.format(name, key))
