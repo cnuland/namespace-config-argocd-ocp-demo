@@ -10,15 +10,14 @@ def bash_command(cmd):
   return subprocess.check_output(cmd)
 
 token = os.getenv('TOKEN')
-login = bash_command_pipe('oc login https://kubernetes.default.svc.cluster.local --token={} --insecure-skip-tls-verify=true > /dev/null 2>&1'.format(token))
-print(login)
+bash_command_pipe('oc login https://kubernetes.default.svc.cluster.local --token={} --insecure-skip-tls-verify=true > /dev/null 2>&1'.format(token))
 data = bash_command_pipe("oc get cm -n namespace-configuration-operator group-labels -o json | jq -r \".data[]\"")
 groups = json.loads(data)
 print("Checking labels on Groups:")
 for group in groups:
   name = group["name"]
   print(name)
-  oc=bash_command_pipe('oc get group {} -o name --ignore-not-found=true | cut -c 11-'.format(name))
+  oc=bash_command_pipe('oc get group {} -o name --ignore-not-found=true | cut -c 25-'.format(name))
   if oc:
     labels = group["labels"]
     for label in labels:
