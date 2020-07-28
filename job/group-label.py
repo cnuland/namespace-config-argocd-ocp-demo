@@ -18,9 +18,11 @@ for group in groups:
   name = group["name"]
   print(name)
   oc=bash_command_pipe('oc get group {} -o name --ignore-not-found=true | cut -c 25-'.format(name))
+  print(oc)
   if oc:
     labels = group["labels"]
     for label in labels:
+      print(label)
       key = label["key"]
       value = label["value"]
       oc = bash_command_pipe('oc get group {} --template "{{{{ .metadata.labels.{} }}}}"'.format(name, key))
