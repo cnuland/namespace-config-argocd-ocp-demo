@@ -4,4 +4,4 @@ metadata:
   name: group-labels
 data:
   group-labels.json: |
-    [{"name": "AI_Team", "labels": [{"key":"type","value":"devproject"}]}]
+    [{"name": "OCP_Example", "labels": [{"key":"type","value":"devproject"},{"key":"test","value":"test2"}]}]
