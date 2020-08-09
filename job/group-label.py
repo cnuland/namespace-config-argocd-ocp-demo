@@ -11,7 +11,7 @@ session.headers = {
 }
 
 def bash_command_pipe(cmd): 
-  ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+  ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,universal_newlines=True)
   return ps.communicate()[0]
 
 def bash_command(cmd): 
