@@ -10,17 +10,21 @@ session.headers = {
     'Accept': 'application/json',
 }
 
+def bash_command_pipe(cmd): 
+  ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+  return ps.communicate()[0]
+
 def bash_command(cmd): 
   return subprocess.check_output(cmd)
 
-token = bash_command("cat /var/run/secrets/kubernetes.io/serviceaccount/token")
+token = bash_command_pipe("cat /var/run/secrets/kubernetes.io/serviceaccount/token")
 if token is not None:
   session.headers['Authorization'] = 'Bearer {0}'.format(token)
 
 # URL Base
 base_url = "https://kubernetes.default.svc.cluster.local/api/v1"
 users_base_url = "https://kubernetes.default.svc.cluster.local/apis/user.openshift.io/v1"
-namespace = bash_command("cat /var/run/secrets/kubernetes.io/serviceaccount/namespace")
+namespace = bash_command_pipe("cat /var/run/secrets/kubernetes.io/serviceaccount/namespace")
 print(namespace)
 print(token)
 cm = session.get(base_url + "/namespaces/{}/configmaps/group-labels".format(namespace))
