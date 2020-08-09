@@ -16,5 +16,5 @@ spec:
             image: group-labeling-job:latest
             command: ["python3", "group-label.py"]
           restartPolicy: OnFailure
-          serviceAccount: robot
-          serviceAccountName: robot
+          serviceAccount: group-label-robot
+          serviceAccountName: group-label-robot
