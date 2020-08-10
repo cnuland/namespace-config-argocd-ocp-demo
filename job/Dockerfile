@@ -10,6 +10,6 @@ RUN rm /etc/rhsm-host && \
     yum repolist > /dev/null && \
     yum update -y && \
     yum install -y python3 && \
-    pip3 install requests
+    pip3 install requests --trusted-host pypi.python.org
     
 USER 1001
