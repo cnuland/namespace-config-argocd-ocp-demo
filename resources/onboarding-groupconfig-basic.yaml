@@ -1,0 +1,15 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupConfig
+metadata:
+  name: team-onboarding
+spec:
+  labelSelector:
+    matchLabels:
+      type: devproject    
+  templates:
+  - enableSprigTemplates: true
+    objectTemplate: |
+      - apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: {{ .Name }}

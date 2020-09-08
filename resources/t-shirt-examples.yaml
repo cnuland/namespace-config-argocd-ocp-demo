@@ -1,0 +1,94 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NamespaceConfig
+metadata:
+  name: limit-range
+spec:
+  labelSelector:
+    matchExpressions:
+      - {key: size, operator: Exists}
+  templates:
+  - objectTemplate: |  
+      apiVersion: "v1"
+      kind: "LimitRange"
+      metadata:
+        name: "resource-limits"
+        namespace: {{ .Name }}
+      spec:
+        limits:
+          -
+            type: "Container"
+            default:
+              cpu: 1
+              memory: '1Gi'
+            defaultRequest:
+              cpu: "500m"
+              memory: "500Mi"
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NamespaceConfig
+metadata:
+  name: quota-small
+spec:
+  labelSelector:
+    matchLabels:
+      size: small  
+  templates:
+  - objectTemplate: |  
+      apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: quota-small
+        namespace: {{ .Name }}  
+      spec:
+        hard:
+          requests.cpu: "2" 
+          requests.memory: "2Gi"
+          pods: "4"
+          limits.cpu: "4"
+          limits.memory: "4Gi"
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NamespaceConfig
+metadata:
+  name: quota-medium
+spec:
+  labelSelector:
+    matchLabels:
+      size: medium
+  templates:
+  - objectTemplate: | 
+      apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: quota-medium
+        namespace: {{ .Name }}
+      spec:
+        hard:
+          requests.cpu: "4" 
+          requests.memory: "4Gi"
+          pods: "6"
+          limits.cpu: "8"
+          limits.memory: "8Gi"
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NamespaceConfig
+metadata:
+  name: quota-large
+spec:
+  labelSelector:
+    matchLabels:
+      size: large  
+  templates:
+  - objectTemplate: |  
+      apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: quota-large
+        namespace: {{ .Name }}  
+      spec:
+        hard:
+          requests.cpu: "8" 
+          requests.memory: "8Gi"
+          pods: "16"
+          limits.cpu: "16"
+          limits.memory: "16Gi"

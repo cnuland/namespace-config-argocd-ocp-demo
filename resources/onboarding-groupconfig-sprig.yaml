@@ -1,0 +1,17 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupConfig
+metadata:
+  name: team-onboarding
+spec:
+  labelSelector:
+    matchLabels:
+      type: devproject    
+  templates:
+  - enableAdvancedTemplateFunctions: true
+    objectTemplate: |
+      - apiVersion: v1
+        kind: Namespace
+        metadata:
+          annotations:
+            sourceTemplate: "{{ toYaml . | b64enc }}"
+          name: {{ index .Labels "teamname" | lower }}
