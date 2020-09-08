@@ -2,7 +2,7 @@
 Demo using ArgoCD and the Namespace Config Operator to automate onboarding for OCP 4.x environments.
 
 ## Overview
-This demo uses the [Namespace Config Operator](https://github.com/redhat-cop/namespace-configuration-operator) and [ArgoCD](https://argoproj.github.io/projects/argo-cd) to show an end to end solution for onboarding a new project and the nessesary resources needed for day 1 operations. The use of an automated approach for syncing an LDAP group to a `Group` in OCP 4.x, simular to the approach shown [here](https://docs.openshift.com/container-platform/4.3/authentication/ldap-syncing.html), is aslo assumed.
+This demo uses the [Namespace Config Operator](https://github.com/redhat-cop/namespace-configuration-operator) and [ArgoCD](https://argoproj.github.io/projects/argo-cd) to show an end to end solution for onboarding a new project and the nessesary resources needed for day 1 operations. The use of an automated approach for syncing an LDAP group to a `Group` in OCP 4.x is also shown. 
 
 ## Utilizing Go Templates
 
@@ -49,4 +49,57 @@ metadata:
     type: devproject
     projectname: saleslearning
 ```
+
+## Advanced Templating
+The namespace config operator also includes advanced templating found in Helm through the sprig library. Here are some examples of those functions,
+
+```golang  
+template:
+  enableAdvancedTemplateFunctions: true
+  objectTemplate: |
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: {{ .Name | lower | shuffle }}
+```
+
+The templating also includes advanced parsing functions such as `ToJson` and `ToYaml`. 
+
+```golang  
+templates:
+- enableAdvancedTemplateFunctions: true
+  objectTemplate: |
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        annotations:
+          sourceTemplate: "{{ toYaml . | b64enc }}"
+        name: {{ index .Labels "teamname" | lower }}
+```
+## Syncing
+When needing to update resources through a GitOps solution there needs to be a tracked resource in source control to trigger that change. This demo includes a python job that runs every 5 minutes and updates any `Group` resource with the added labels. These labels are specified in ConfigMap, thus giving a central location for all changes to be changed and tracked in source control.
+
+```
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: group-label-job
+spec:
+  schedule: "*/5 * * * *"  
+  jobTemplate:             
+    spec:
+      template:
+        metadata:
+          labels:          
+            parent: "cron-group-label-job"
+        spec:
+          containers:
+          - name: group-label-job
+            image: group-labeling-job:latest
+            command: ["python3", "group-label.py"]
+          restartPolicy: OnFailure
+          serviceAccount: group-label-robot
+          serviceAccountName: group-label-robot
+```
+
 ## Installation
