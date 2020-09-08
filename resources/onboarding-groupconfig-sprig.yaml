@@ -7,11 +7,11 @@ spec:
     matchLabels:
       type: devproject    
   templates:
-  - enableAdvancedTemplateFunctions: true
     objectTemplate: |
       - apiVersion: v1
         kind: Namespace
         metadata:
           annotations:
+            ncoCreatedOn: '{{ (lookup "v1" "Namespace" "" "namespace-configuration-operator").metadata.creationTimestamp }}'
             sourceTemplate: "{{ toYaml . | b64enc }}"
-          name: {{ index .Labels "teamname" | lower }}
+          name: {{ .Name | lower }}

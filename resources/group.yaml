@@ -2,9 +2,7 @@ kind: Group
 apiVersion: user.openshift.io/v1
 metadata:
   name: ocp-example
-  annotations:
-    test: "test"
   labels:
     type: devproject
-    teamname: TEST
+    team-name: TEST
     size: large
