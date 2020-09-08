@@ -49,4 +49,57 @@ metadata:
     type: devproject
     projectname: saleslearning
 ```
+
+## Advanced Templating
+The namespace config operator also includes advanced templating found in Helm through the sprig library. Here are some examples of those functions,
+
+```golang  
+template:
+  enableAdvancedTemplateFunctions: true
+  objectTemplate: |
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: {{ .Name | lower | shuffle }}
+```
+
+The templating also includes advanced parsing functions such as `ToJson` and `ToYaml`. 
+
+```golang  
+templates:
+- enableAdvancedTemplateFunctions: true
+  objectTemplate: |
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        annotations:
+          sourceTemplate: "{{ toYaml . | b64enc }}"
+        name: {{ index .Labels "teamname" | lower }}
+```
+## Syncing
+When needing to update resources through a GitOps solution there needs to be a tracked resource in source control to trigger that change. This demo includes a python job that runs every 5 minutes and updates any `Group` resource with the added labels. These labels are specified in ConfigMap, thus giving a central location for all changes to be changed and tracked in source control.
+
+```
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: group-label-job
+spec:
+  schedule: "*/5 * * * *"  
+  jobTemplate:             
+    spec:
+      template:
+        metadata:
+          labels:          
+            parent: "cron-group-label-job"
+        spec:
+          containers:
+          - name: group-label-job
+            image: group-labeling-job:latest
+            command: ["python3", "group-label.py"]
+          restartPolicy: OnFailure
+          serviceAccount: group-label-robot
+          serviceAccountName: group-label-robot
+```
+
 ## Installation
