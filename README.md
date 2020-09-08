@@ -2,7 +2,7 @@
 Demo using ArgoCD and the Namespace Config Operator to automate onboarding for OCP 4.x environments.
 
 ## Overview
-This demo uses the [Namespace Config Operator](https://github.com/redhat-cop/namespace-configuration-operator) and [ArgoCD](https://argoproj.github.io/projects/argo-cd) to show an end to end solution for onboarding a new project and the nessesary resources needed for day 1 operations. The use of an automated approach for syncing an LDAP group to a `Group` in OCP 4.x, simular to the approach shown [here](https://docs.openshift.com/container-platform/4.3/authentication/ldap-syncing.html), is aslo assumed.
+This demo uses the [Namespace Config Operator](https://github.com/redhat-cop/namespace-configuration-operator) and [ArgoCD](https://argoproj.github.io/projects/argo-cd) to show an end to end solution for onboarding a new project and the nessesary resources needed for day 1 operations. The use of an automated approach for syncing an LDAP group to a `Group` in OCP 4.x is also shown. 
 
 ## Utilizing Go Templates
 
